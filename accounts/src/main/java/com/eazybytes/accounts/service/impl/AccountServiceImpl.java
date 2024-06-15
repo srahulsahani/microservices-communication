@@ -1,10 +1,13 @@
 package com.eazybytes.accounts.service.impl;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.dto.AccountsDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
+import com.eazybytes.accounts.exception.ResourceNotFoundException;
+import com.eazybytes.accounts.mapper.AccountsMapper;
 import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
@@ -49,9 +52,8 @@ public class AccountServiceImpl implements IAccountsService {
      */
     private Accounts createNewAccount(Customer customer){
         Accounts newAccount = new Accounts();
-        newAccount.setAccountNumber(customer.getCustomerId());
+        newAccount.setCustomerId(customer.getCustomerId());
 
-        
         long randomAccountNumber = 1000000000L + new Random().nextInt(900000000);
         newAccount.setAccountNumber(randomAccountNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
@@ -60,4 +62,23 @@ public class AccountServiceImpl implements IAccountsService {
         newAccount.setCreatedBy("Anynomous");
         return newAccount;
     }
+
+
+    /**
+     * @param mobileNumber
+     * @return Account details based in mobileNumber
+     */
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer","mobileNumber",mobileNumber));
+        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(()-> new ResourceNotFoundException("Account","customerId",customer.getCustomerId().toString()));
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer,new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts,new AccountsDto()));
+
+        return customerDto;
+    }
+
 }

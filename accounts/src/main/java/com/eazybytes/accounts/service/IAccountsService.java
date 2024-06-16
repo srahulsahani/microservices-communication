@@ -24,4 +24,11 @@ public interface IAccountsService {
     boolean updateAccount(CustomerDto customerDto);
 
 
+    /**
+     * @param mobileNumber
+     * @return booleab indicating if the account is deleted or not
+     */
+    boolean deleteAccount(String mobileNumber);
+
+
 }

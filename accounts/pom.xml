@@ -68,7 +68,7 @@
 		<plugins>
 			<plugin>
 				<!--TO CREATE DOCKER IMAGE USING BuildPacks-->
-				<groupId>org.springframework.boot</groupId>
+				<!--<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
@@ -80,6 +80,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>-->
+
+				<!--TO CREATE DOCKER IMAGE USING GoogleJib-->
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>eazybytes/${project.artifactId}:s4</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

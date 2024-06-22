@@ -8,8 +8,22 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
     example: java -jar .\target\accounts-0.0.1-SNAPSHOT.jar
 
 ### Steps to create and run Docker image 
+###### ALWAYS RUN THE DOCKER DESKTOP WHILE EXECUTING ANY DOCKER COMMAND OR BUILDING DOCKER IMAGE
+> 1. #### Using Dockerfile and docker build cmd
+* Create the Dockerfile
 * Run this command in your application folder : docker build . -t <dockerusername>/<applicationname>:<version>
 * "docker build . -t srahulsahani/accounts:s4"
+
+> 2. #### Using BuildPacks e.g Paketo BuildPacks
+* Add application name <image>
+* "dockerusername/${project.artifactId}" inside plugins>plugin>configuration>image>name
+* Go to application directory and execute "mvn spring-boot:build-image, if issue still persists try changing springboot-starter-parent dependency
+  "
+* NOTE: if following error is there
+> Execution default-cli of goal org.springframework.boot:spring-boot-maven-plugin:3.3.0:build-image failed: Illegal char <:> at index 5: npipe:////./pipe/dockerDesktopLinuxEngine
+* Go to Maven in Intellij, find your service e.g accounts>plugins>spring-boot, execute: spring-boot:build-image
+* In pom.xml, under plugins>plugin, this dependency should be there "spring-boot-maven-plugin" with version same as spring-boot-starter-parent
+
 
 ### Docker run port mapping signature
 #### docker run -p <exposed-port>:<application-port> <docker-image-name>

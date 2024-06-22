@@ -67,6 +67,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!--TO CREATE DOCKER IMAGE USING BuildPacks-->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>

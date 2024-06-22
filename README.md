@@ -24,6 +24,19 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 * Go to Maven in Intellij, find your service e.g accounts>plugins>spring-boot, execute: spring-boot:build-image
 * In pom.xml, under plugins>plugin, this dependency should be there "spring-boot-maven-plugin" with version same as spring-boot-starter-parent
 
+> 2. #### Using Google Jib
+* Add the required libraries
+~~~ <groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>eazybytes/${project.artifactId}:s4</image>
+					</to>
+				</configuration>
+~~~
+* Execute "mvn compile jib:dockerBuild"
+
 
 ### Docker run port mapping signature
 #### docker run -p <exposed-port>:<application-port> <docker-image-name>

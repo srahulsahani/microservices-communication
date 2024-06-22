@@ -45,4 +45,8 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 ###### Detached Mode
 > docker run -d -p 8080:8080 srahulsahani/accounts:s4
 
-  
+## PUSH DOCKER IMAGES TO DOCKER HUB
+* Command to push images to docker hub
+> docker image push docker.io/<docker-username>/<service-name>:tag
+> > docker image push docker.io/srahulsahani/accounts:s4
+

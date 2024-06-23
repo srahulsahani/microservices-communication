@@ -25,7 +25,7 @@ services:
     image: "srahulsahani/cards:s4"
     container_name: cards-ms
     ports:
-      - "9000:9090"
+      - "9000:9000"
     deploy:
       resources:
         limits:

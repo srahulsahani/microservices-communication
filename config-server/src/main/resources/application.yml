@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: "config-server"
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/srahulsahani/application-configuration.git"
+          search-paths: '*,eazybytes-config/loans,eazybytes-config/accounts,eazybytes-config/cards' #add the directory-location of each application
+          default-label: main # for selecting main branch
+          timeout: 5
+          clone-on-start: true #cloning git repo on-start
+          force-pull: true
+
+
+server:
+  port: 8071

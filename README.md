@@ -50,3 +50,6 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 > docker image push docker.io/<docker-username>/<service-name>:tag
 > > docker image push docker.io/srahulsahani/accounts:s4
 
+## INSTALL RABBITMQ in DOCKER
+* Prerequisites- DOCKER
+> docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management

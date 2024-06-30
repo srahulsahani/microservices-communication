@@ -21,9 +21,18 @@ spring:
     ddl-auto: update
   show-sql: true
 
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+  cloud:
+    bus:
+      enabled: true
+
 #for spring-actuator
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*,busrefresh"

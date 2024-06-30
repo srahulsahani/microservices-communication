@@ -20,3 +20,10 @@ spring:
   hibernate:
     ddl-auto: update
   show-sql: true
+
+#for spring-actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

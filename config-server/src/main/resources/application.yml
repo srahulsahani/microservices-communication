@@ -14,6 +14,8 @@ spring:
           clone-on-start: true #cloning git repo on-start
           force-pull: true
 
+encrypt:
+  key: "0fc23787247e8742fcbe"
 
 server:
   port: 8071

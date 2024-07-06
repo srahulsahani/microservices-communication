@@ -21,3 +21,16 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+#for spring-actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -27,13 +27,16 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 > 2. #### Using Google Jib
 * Add the required libraries
 ~~~ <groupId>com.google.cloud.tools</groupId>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>eazybytes/${project.artifactId}:s4</image>
+						<image>srahulsahani/${project.artifactId}:s6</image>
 					</to>
 				</configuration>
+			</plugin>
 ~~~
 * Execute "mvn compile jib:dockerBuild"
 
@@ -50,3 +53,6 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 > docker image push docker.io/<docker-username>/<service-name>:tag
 > > docker image push docker.io/srahulsahani/accounts:s4
 
+## INSTALL RABBITMQ in DOCKER
+* Prerequisites- DOCKER
+> docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management

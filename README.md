@@ -27,13 +27,16 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 > 2. #### Using Google Jib
 * Add the required libraries
 ~~~ <groupId>com.google.cloud.tools</groupId>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>eazybytes/${project.artifactId}:s4</image>
+						<image>srahulsahani/${project.artifactId}:s6</image>
 					</to>
 				</configuration>
+			</plugin>
 ~~~
 * Execute "mvn compile jib:dockerBuild"
 

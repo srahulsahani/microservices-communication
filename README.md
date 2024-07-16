@@ -64,5 +64,12 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 * > docker run -p 3307:3306 --name loansdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=loansdb -d mysql
 * > docker run -p 3308:3306 --name cardsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=cardsdb -d mysql
 
+* if we are running all database container and microservice in same network, we should provide port as 3306
+~~~
+  network-deploy-service:
+    networks:
+      - eazybank
+~~~
+ 
 
 

@@ -56,3 +56,13 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 ## INSTALL RABBITMQ in DOCKER
 * Prerequisites- DOCKER
 > docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+
+
+## PULL AND SETUP MYSQL in DOCKER
+* Prerequisite- DOCKER
+* > docker run -p 3305:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql
+* > docker run -p 3307:3306 --name loansdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=loansdb -d mysql
+* > docker run -p 3308:3306 --name cardsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=cardsdb -d mysql
+
+
+

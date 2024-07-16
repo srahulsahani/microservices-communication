@@ -60,4 +60,9 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 
 ## PULL AND SETUP MYSQL in DOCKER
 * Prerequisite- DOCKER
-* >docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql
+* > docker run -p 3305:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql
+* > docker run -p 3307:3306 --name loansdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=loansdb -d mysql
+* > docker run -p 3308:3306 --name cardsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=cardsdb -d mysql
+
+
+

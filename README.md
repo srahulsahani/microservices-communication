@@ -70,6 +70,6 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
     networks:
       - eazybank
 ~~~
-
+ 
 
 

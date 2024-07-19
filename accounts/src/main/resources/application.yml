@@ -26,12 +26,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*,busrefresh"
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
   info:
     env:
       enabled: true
-  endpoint:
-    enabled: true
 
 endpoints:
   shutdown:
@@ -46,7 +47,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 
-# Infor Details for Cards Application in Service Registry
+# Info Details for Cards Application in Service Registry
 info:
   app:
     name: "accounts"

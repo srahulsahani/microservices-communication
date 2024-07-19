@@ -56,3 +56,30 @@ Generate jar packing of services by mentioning <packaging>jar<packaging> in pom.
 ## INSTALL RABBITMQ in DOCKER
 * Prerequisites- DOCKER
 > docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+
+## ADD EUREKA SERVER
+* Create springboot project with given dependency
+~~~ 
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency> 
+~~~
+
+* Configure with these properties:
+~~~
+server:
+  port: 8070
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+~~~
+* Enable @EnableEurekaServer annotation in springboot main class, then build and run application and check at 
+http://localhost:8070
+

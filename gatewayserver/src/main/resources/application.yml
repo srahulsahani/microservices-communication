@@ -7,9 +7,9 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
+          lowerCaseServiceId: true
 
-#for spring-actuator
 management:
   endpoints:
     web:
@@ -22,9 +22,14 @@ management:
     env:
       enabled: true
 
-# Info Details for Cards Application in Service Registry
 info:
   app:
     name: "gatewayserver"
-    description: "Gateway Server Application"
+    description: "Eazy Bank Gateway Server Application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG

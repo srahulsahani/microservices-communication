@@ -83,3 +83,74 @@ eureka:
 * Enable @EnableEurekaServer annotation in springboot main class, then build and run application and check at 
 http://localhost:8070
 
+## ADD APIGATEWAY or EDGESERVER
+* Create springboot project and add these two dependencies
+* For Gateway
+~~~
+                <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+~~~
+* For registering with EurekaServer
+~~~
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+~~~
+
+* ADD following configurations to application.yml
+~~~
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+~~~
+
+* NOTE
+  * Remove **spring-boot-devtools** dependency
+  * Place this configuration for **apigateway** in **config-server** repository and name the file as gatewayserver.yml
+~~~ 
+server:
+  port: 8072
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: "http://localhost:8070/eureka/"
+~~~
+
+* Always start services in following order
+* > Config-server > eureka-server> your-custom-apps(accounts,loans,cards) > apigateway
+* Reason: 
+  * configuration needs to be fetched for all services
+  * service-registry(eurekaserver) needs to register all services
+  * apigateway will automatically routes to you custom applications
+  * Note: apigateway will only routes to custom apps when **spring.config.cloud.gateway.discovery.locator.enabled = true**
+  * Also, new url will be: http://<dns>:<port-of-api-gateway>/<service-name>/<custom-app-api>
+    * e.g http://localhost:8072/accounts/api/create, here accounts is serivice name registed with eureka server.
+    * Use service name in smallcase only if **lowerCaseServiceId: true** else use in CAPS
+    * e.g http://localhost:8072/ACCOUNTS/api/create

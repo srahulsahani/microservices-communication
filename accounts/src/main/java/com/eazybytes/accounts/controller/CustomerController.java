@@ -7,14 +7,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "REST APIs for Customer in EazyBank",
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api",produces = {MediaType.APPLICATION_JSON_VALUE})
 @Validated
 public class CustomerController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
     private final ICustomerService iCustomerService;
 
@@ -41,10 +42,11 @@ public class CustomerController {
     )
     @GetMapping("/fetchCustomerDetails")
     public ResponseEntity<CustomerDetailsDTO> fetchCustomerDetails(
-            @RequestParam
-            @Pattern(regexp = "(^$|[0-9]{10})",message = "Mobile number must be of 10 digit")
+            @RequestHeader("eazybank-correlation-id") String correlationId,
+            @RequestParam @Pattern(regexp = "(^$|[0-9]{10})",message = "Mobile number must be of 10 digit")
             String mobileNumber){
-        CustomerDetailsDTO customerDetailsDTO = iCustomerService.fetchCustomerDetails(mobileNumber);
+        logger.debug("eazybank-correlation-id found: {} ",correlationId);
+        CustomerDetailsDTO customerDetailsDTO = iCustomerService.fetchCustomerDetails(mobileNumber,correlationId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerDetailsDTO);

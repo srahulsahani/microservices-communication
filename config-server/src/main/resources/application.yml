@@ -14,6 +14,21 @@ spring:
           clone-on-start: true #cloning git repo on-start
           force-pull: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 encrypt:
   key: "0fc23787247e8742fcbe"
 

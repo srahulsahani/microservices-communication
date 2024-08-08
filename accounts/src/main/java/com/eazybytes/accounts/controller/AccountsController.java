@@ -140,10 +140,9 @@ public class AccountsController {
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo(){
         logger.debug("getBuildInfo() method Invoked");
-        throw new RuntimeException();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(buildVersion);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
     }
 
     public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){

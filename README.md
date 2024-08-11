@@ -154,3 +154,6 @@ eureka:
     * e.g http://localhost:8072/accounts/api/create, here accounts is serivice name registed with eureka server.
     * Use service name in smallcase only if **lowerCaseServiceId: true** else use in CAPS
     * e.g http://localhost:8072/ACCOUNTS/api/create
+## NOTE
+* Run redis in docker for RateLimiter
+* > docker run -p 6379:6379 --name eazyredis -d redis

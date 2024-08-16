@@ -12,7 +12,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "srahulsahani/configserver:s10"
+    image: "srahulsahani/configserver:s11"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -27,7 +27,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "srahulsahani/eurekaserver:s10"
+    image: "srahulsahani/eurekaserver:s11"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -45,7 +45,7 @@ services:
 
 
   accounts:
-    image: "srahulsahani/accounts:s10"
+    image: "srahulsahani/accounts:s11"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -64,7 +64,7 @@ services:
 
 
   loans:
-    image: "srahulsahani/loans:s10"
+    image: "srahulsahani/loans:s11"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -81,7 +81,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "srahulsahani/cards:s10"
+    image: "srahulsahani/cards:s11"
     container_name: cards-ms
     ports:
       - "9000:9000"
@@ -98,7 +98,7 @@ services:
       service: microservice-eureka-config
 
   gatewayserver:
-    image: "srahulsahani/gatewayserver:s10"
+    image: "srahulsahani/gatewayserver:s11"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"

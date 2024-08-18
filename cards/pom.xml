@@ -113,7 +113,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>srahulsahani/${project.artifactId}:s11</image>
+						<image>srahulsahani/${project.artifactId}:s12</image>
 					</to>
 				</configuration>
 			</plugin>

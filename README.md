@@ -157,3 +157,7 @@ eureka:
 ## NOTE
 * Run redis in docker for RateLimiter
 * > docker run -p 6379:6379 --name eazyredis -d redis
+
+## START KEYCLOAK IN DOCKER
+* >docker run -d -p 7080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.2 start-dev
+*  KeyCloak Url to generate token: http://localhost:7080/realms/master/protocol/openid-connect/token

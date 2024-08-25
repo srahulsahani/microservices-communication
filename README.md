@@ -161,3 +161,37 @@ eureka:
 ## START KEYCLOAK IN DOCKER
 * >docker run -d -p 7080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.2 start-dev
 *  KeyCloak Url to generate token: http://localhost:7080/realms/master/protocol/openid-connect/token
+
+### HOW TO SETUP KEYCLOAK
+* login to KeyCloak 
+* > localhost:7080
+* Sign in using default username,password ( admin,admin)
+* Go to Clients > Create Client 
+* Client Type -> OpenId Connect
+* Client ID -> eazybank-callcenter-cc
+* Write Description
+* Client authentication -> ON
+* Deselect -> Standard flow and Direct Access grants and SELECT Service accounts Role
+* URL to generate token (Realm Setting) 
+* > http://localhost:7080/realms/master/protocol/openid-connect/token
+
+#### Create ROLES
+*   Click on Realm Roles > Create role
+*  Role Name = ACCOUNTS, write descriptions as well
+* Go to *Clients* , Select eazybank-callcenter-cc,
+* Go to *Service accounts roles* > Assign roles
+* (Filter by realm roles), Select *ACCOUNTS*
+
+## How GENERATE TOKEN using OAUTH2 in POSTMAN during API Call
+
+* Select OAuth 2.0
+* *Token Name* > Clientscredentials_accesstoken
+* *Grant type* > Clients Credentials
+* *Access Token URL* > http://localhost:7080/realms/master/protocol/openid-connect/token
+* *Client ID* > eazybank-callcenter-cc
+* *Client Secret* > Put from KeyCloak
+* *Scope* > openid email profile
+* *Client Authentication* > Send Client credentials in body
+
+* > Under *Clients* >eazybank-callcenter-cc > Credentials > Client secret,
+  > client secret will be present

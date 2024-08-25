@@ -81,7 +81,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>srahulsahani/${project.artifactId}:s12</image>
+						<image>srahulsahani/${project.artifactId}:s13</image>
 					</to>
 				</configuration>
 			</plugin>

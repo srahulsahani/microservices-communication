@@ -255,3 +255,68 @@ subjects:
 ### Getting a Bearer Token for ServiceAccount
 
 * > kubectl -n kubernetes-dashboard create token admin-user
+
+
+### Getting a long-lived Bearer Token for ServiceAccount (token won't expire)
+* Create new file: secret.yaml, save the below content
+~~~
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/service-account.name: "admin-user"   
+type: kubernetes.io/service-account-token    
+~~~
+* Execute this command to apply configuration
+* > kubectl apply -f secret.yaml
+* Generate permanent token:
+* > kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
+  > 
+
+
+### Deploying a service in KUBERNETES
+* Create a deployment file for required service: eg -> configserver.yml for configserver service
+* Save the following content:
+~~~
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver-deployment
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      containers:
+        - name: configserver
+          image: srahulsahani/configserver:s13
+          ports:
+            - containerPort: 8071
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver
+spec:
+  selector:
+    app: configserver
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8071
+      targetPort: 8071
+~~~
+* Execute:
+* > kubectl apply -f configserver.yml
+
+* **NOTE**
+* Under image - update the image name

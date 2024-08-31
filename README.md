@@ -343,4 +343,16 @@ data:
   SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/master/protocol/openid-connect/certs"
 ~~~
 * Execute:
-* > kubectl apply -f coonfigmaps.yaml
+* > kubectl apply -f configmaps.yaml
+
+### ORDER TO DEPLOY SERVICES IN K8S, because of dependency on each other
+~~~
+1_keycloak.yml
+2_configmaps.yaml
+3_configserver.yml
+4_eurekaserver.yml
+5_accounts.yml
+6_loans.yml
+7_cards.yml
+8_gateway.yml
+~~~

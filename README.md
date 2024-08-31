@@ -195,3 +195,63 @@ eureka:
 
 * > Under *Clients* >eazybank-callcenter-cc > Credentials > Client secret,
   > client secret will be present
+## How to Configure KUBERNETES in DOCKER DESKTOP
+* Go to Docker Desktop UI
+* Go to Setting, select Kubernetes, Select *Enable Kubernetes*
+* Apply and restart
+* Note: Do not select *Show system containers (advanced)*
+
+## How to Configure HELM in Kubernetes (WINDOWS)
+
+* Install HELM
+* > winget install Helm.Helm
+*  check version:
+* > helm version
+* Add kubernetes-dashboard repository
+* > helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+* Deploy a Helm Release named "kubernetes-dashboard" using the kubernetes-dashboard chart
+* > helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+* To access Dashboard run:
+* > kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+
+## CREATING AN USER, to generate token for login
+
+### Creating a Service Account
+  * Create a folder, go to this folder location in terminal and execute
+    * > notepad dashboard-adminuser.yaml
+  * Open this file in text editor,save this content
+  ~~~
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: admin-user
+    namespace: kubernetes-dashboard
+  ~~~
+* Execute 
+* > kubectl apply -f dashboard-adminuser.yaml
+
+### Creating a ClusterRoleBinding
+* Create a dashboard-rolebinding.yaml file
+* > notepad dashboard-rolebinding.yaml
+* Save the content in the file
+~~~
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+~~~
+* Execute this command to apply configuration
+* > kubectl apply -f dashboard-rolebinding.yaml
+
+### Getting a Bearer Token for ServiceAccount
+
+* > kubectl -n kubernetes-dashboard create token admin-user

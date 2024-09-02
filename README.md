@@ -195,3 +195,164 @@ eureka:
 
 * > Under *Clients* >eazybank-callcenter-cc > Credentials > Client secret,
   > client secret will be present
+## How to Configure KUBERNETES in DOCKER DESKTOP
+* Go to Docker Desktop UI
+* Go to Setting, select Kubernetes, Select *Enable Kubernetes*
+* Apply and restart
+* Note: Do not select *Show system containers (advanced)*
+
+## How to Configure HELM in Kubernetes (WINDOWS)
+
+* Install HELM
+* > winget install Helm.Helm
+*  check version:
+* > helm version
+* Add kubernetes-dashboard repository
+* > helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+* Deploy a Helm Release named "kubernetes-dashboard" using the kubernetes-dashboard chart
+* > helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+* To access Dashboard run:
+* > kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+
+## CREATING AN USER, to generate token for login
+
+### Creating a Service Account
+  * Create a folder, go to this folder location in terminal and execute
+    * > notepad dashboard-adminuser.yaml
+  * Open this file in text editor,save this content
+  ~~~
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: admin-user
+    namespace: kubernetes-dashboard
+  ~~~
+* Execute 
+* > kubectl apply -f dashboard-adminuser.yaml
+
+### Creating a ClusterRoleBinding
+* Create a dashboard-rolebinding.yaml file
+* > notepad dashboard-rolebinding.yaml
+* Save the content in the file
+~~~
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+~~~
+* Execute this command to apply configuration
+* > kubectl apply -f dashboard-rolebinding.yaml
+
+### Getting a Bearer Token for ServiceAccount
+
+* > kubectl -n kubernetes-dashboard create token admin-user
+
+
+### Getting a long-lived Bearer Token for ServiceAccount (token won't expire)
+* Create new file: secret.yaml, save the below content
+~~~
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/service-account.name: "admin-user"   
+type: kubernetes.io/service-account-token    
+~~~
+* Execute this command to apply configuration
+* > kubectl apply -f secret.yaml
+* Generate permanent token:
+* > kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
+  > 
+
+
+### Deploying a service in KUBERNETES
+* Create a deployment file for required service: eg -> configserver.yml for configserver service
+* Save the following content:
+~~~
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver-deployment
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      containers:
+        - name: configserver
+          image: srahulsahani/configserver:s13
+          ports:
+            - containerPort: 8071
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver
+spec:
+  selector:
+    app: configserver
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8071
+      targetPort: 8071
+~~~
+* Execute:
+* > kubectl apply -f configserver.yml
+
+* **NOTE**
+* Under image - update the image name
+
+### CREATE CONFIG MAPS
+* Create file name : configmaps.yaml and save below content
+~~~
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eazybank-configmap
+data:
+  SPRING_PROFILES_ACTIVE: prod
+  SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
+  CONFIGSERVER_APPLICATION_NAME: configserver
+  EUREKA_APPLICATION_NAME: eurekaserver
+  ACCOUNTS_APPLICATION_NAME: accounts
+  LOANS_APPLICATION_NAME: loans
+  CARDS_APPLICATION_NAME: cards
+  GATEWAY_APPLICATION_NAME: gatewayserver
+  KEYCLOAK_ADMIN: admin
+  KEYCLOAK_ADMIN_PASSWORD: admin
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/master/protocol/openid-connect/certs"
+~~~
+* Execute:
+* > kubectl apply -f configmaps.yaml
+
+### ORDER TO DEPLOY SERVICES IN K8S, because of dependency on each other
+~~~
+1_keycloak.yml
+2_configmaps.yaml
+3_configserver.yml
+4_eurekaserver.yml
+5_accounts.yml
+6_loans.yml
+7_cards.yml
+8_gateway.yml
+~~~
